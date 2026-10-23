@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les nombres — learn French numbers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@300;400&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#FBFCFE;
+  --surface:#FFFFFF;
+  --line:#C9D7EE;
+  --line-soft:#E4ECF8;
+  --margin:#D2384B;
+  --ink:#1E2A5A;
+  --ink-soft:#56608A;
+  --pen:#3F3A9E;
+  --good:#1F7A4D;
+  --good-bg:#E3F4EA;
+  --bad:#B42335;
+  --bad-bg:#FBE6E9;
+  --chip:#EEF2FB;
+  --hand:"Playwrite FR Moderne", "Segoe Script", "Bradley Hand", cursive;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme: dark;
+    --paper:#141B33;
+    --surface:#1B2443;
+    --line:#2E3B66;
+    --line-soft:#232E52;
+    --margin:#F06A7B;
+    --ink:#E9ECF8;
+    --ink-soft:#A4ADD0;
+    --pen:#B3ADFF;
+    --good:#6FD8A0;
+    --good-bg:#18362A;
+    --bad:#FF8B98;
+    --bad-bg:#3D1C25;
+    --chip:#24305A;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pen);outline-offset:2px;border-radius:6px}
+
+/* Header */
+header{
+  position:sticky;top:0;z-index:5;background:var(--paper);
+  border-bottom:2px solid var(--margin);
+}
+.bar{max-width:1080px;margin:0 auto;padding:.7rem 1.2rem;display:flex;flex-wrap:wrap;gap:.8rem 1.4rem;align-items:center}
+.brand{font-family:var(--hand);font-size:1.25rem;color:var(--pen);margin-right:auto;white-space:nowrap}
+nav{display:flex;gap:.25rem;flex-wrap:wrap}
+nav button{
+  background:none;border:none;padding:.45rem .8rem;border-radius:8px;cursor:pointer;color:var(--ink-soft);font-weight:700;
+}
+nav button[aria-selected="true"]{color:var(--ink);background:var(--chip)}
+.settings{display:flex;gap:.6rem;flex-wrap:wrap;font-size:.9rem;color:var(--ink-soft)}
+.settings label{display:flex;gap:.35rem;align-items:center}
+select{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.3rem .5rem}
+
+main{max-width:1080px;margin:0 auto;padding:1.5rem 1.2rem 4rem}
+section[hidden]{display:none}
+h2{font-size:1.6rem;margin:.2rem 0 .4rem;line-height:1.2}
+h3{font-size:1.15rem;margin:1.6rem 0 .4rem}
+p{max-width:68ch;margin:.4rem 0 .8rem}
+.muted{color:var(--ink-soft)}
+
+/* Notebook paper — the one bold thing */
+.cahier{
+  position:relative;background-color:var(--surface);
+  background-image:
+    linear-gradient(to right, transparent 3.2rem, var(--margin) 3.2rem, var(--margin) calc(3.2rem + 2px), transparent calc(3.2rem + 2px)),
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size:100% 100%, 100% 2rem, 100% .5rem, 2rem 100%;
+  border:1px solid var(--line);border-radius:4px;
+  padding:1.4rem 1.4rem 1.6rem 4.4rem;
+}
+.hand{font-family:var(--hand);color:var(--pen);font-weight:400}
+
+/* Hero */
+.hero{display:grid;gap:.4rem;margin-bottom:2rem}
+.hero .digits{font-size:clamp(3rem,10vw,6.5rem);font-weight:700;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.hero .words{font-size:clamp(1.3rem,3.6vw,2.2rem);line-height:1.6;min-height:3.5rem}
+.hero-controls{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+
+.btn{
+  border:1px solid var(--line);background:var(--surface);padding:.5rem .95rem;border-radius:999px;cursor:pointer;font-weight:700;
+}
+.btn:hover{border-color:var(--pen)}
+.btn.primary{background:var(--pen);color:var(--surface);border-color:var(--pen)}
+.btn.small{padding:.25rem .65rem;font-size:.88rem}
+
+/* Lesson list */
+.lessons{display:grid;grid-template-columns:minmax(180px,240px) 1fr;gap:2rem;align-items:start}
+.lesson-nav{display:flex;flex-direction:column;gap:.2rem;position:sticky;top:5.5rem}
+.lesson-nav button{
+  text-align:left;background:none;border:none;border-left:3px solid transparent;padding:.5rem .8rem;cursor:pointer;color:var(--ink-soft)
+}
+.lesson-nav button b{display:block;color:var(--ink)}
+.lesson-nav button[aria-current="true"]{border-left-color:var(--margin);background:var(--chip)}
+.lesson-nav button small{font-size:.85rem}
+@media (max-width:760px){
+  .lessons{grid-template-columns:1fr}
+  .lesson-nav{position:static;flex-direction:row;overflow-x:auto}
+  .lesson-nav button{border-left:none;border-bottom:3px solid transparent;white-space:nowrap}
+  .lesson-nav button[aria-current="true"]{border-bottom-color:var(--margin)}
+  .cahier{padding-left:2.6rem;background-size:100% 100%, 100% 2rem, 100% .5rem, 2rem 100%}
+  .cahier{background-image:
+    linear-gradient(to right, transparent 1.6rem, var(--margin) 1.6rem, var(--margin) calc(1.6rem + 2px), transparent calc(1.6rem + 2px)),
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);}
+}
+
+/* Tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin:.8rem 0 1rem}
+.tile{
+  text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.55rem .7rem;cursor:pointer;
+  display:flex;flex-direction:column;gap:.1rem;min-height:4.4rem
+}
+.tile:hover{border-color:var(--pen)}
+.tile .n{font-weight:700;font-size:1.15rem;font-variant-numeric:tabular-nums}
+.tile .w{font-family:var(--hand);color:var(--pen);font-size:.86rem;line-height:1.5}
+.tile .m{font-size:.78rem;color:var(--ink-soft)}
+
+.rule{border-left:3px solid var(--margin);padding:.2rem 0 .2rem 1rem;margin:1rem 0}
+.rule p{margin:.2rem 0}
+table.ex{border-collapse:collapse;margin:.6rem 0 1rem;width:100%;max-width:640px}
+.scroll{overflow-x:auto}
+table.ex td,table.ex th{padding:.45rem .7rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.ex th{font-size:.85rem;color:var(--ink-soft);font-weight:700}
+table.ex td:first-child{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.ex .hand{font-size:.95rem}
+.speak{background:none;border:none;cursor:pointer;font-size:1rem;padding:.1rem .3rem;border-radius:6px}
+
+/* 1–100 chart */
+.chart{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:3px;margin-top:1rem}
+.chart button{
+  aspect-ratio:1/1;border:1px solid var(--line);background:var(--surface);cursor:pointer;border-radius:6px;font-weight:700;
+  font-variant-numeric:tabular-nums;font-size:clamp(.8rem,2vw,1.05rem)
+}
+.chart button.z7{background:var(--chip)}
+.chart button.on{background:var(--pen);color:var(--surface);border-color:var(--pen)}
+.chart-out{min-height:5rem;margin-top:1rem}
+.legend{font-size:.9rem;color:var(--ink-soft);display:flex;gap:.5rem;align-items:center;margin-top:.5rem}
+.legend span{display:inline-block;width:1rem;height:1rem;border-radius:3px;background:var(--chip);border:1px solid var(--line)}
+
+/* Converter */
+.conv-input{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin:.6rem 0 1.2rem}
+.conv-input input{font-size:1.6rem;font-weight:700;width:min(100%,16ch);padding:.4rem .7rem;border:2px solid var(--line);border-radius:10px;background:var(--surface)}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.chip{background:var(--chip);border-radius:10px;padding:.45rem .7rem}
+.chip .k{font-size:.8rem;color:var(--ink-soft);display:block}
+.chip .hand{font-size:1rem}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.25rem 0;max-width:68ch}
+
+/* Practice */
+.modes{display:flex;gap:.4rem;flex-wrap:wrap;margin:.6rem 0}
+.modes button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.4rem .9rem;cursor:pointer;font-weight:700}
+.modes button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.prac-top{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;margin:.4rem 0 1rem}
+.score{display:flex;gap:1.2rem;font-variant-numeric:tabular-nums}
+.score div{display:flex;flex-direction:column;line-height:1.2}
+.score b{font-size:1.4rem}
+.score small{color:var(--ink-soft);font-size:.8rem}
+.prompt{font-size:clamp(2.2rem,7vw,4rem);font-weight:700;line-height:1.15;margin:.2rem 0 1rem;min-height:4rem}
+.prompt.hand{font-size:clamp(1.3rem,4vw,2.2rem);font-weight:400;line-height:1.7}
+.answer-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.answer-row input{flex:1 1 280px;font-size:1.2rem;padding:.6rem .8rem;border:2px solid var(--line);border-radius:10px;background:var(--surface)}
+.accents{display:flex;gap:.3rem;margin-top:.5rem;flex-wrap:wrap}
+.feedback{margin-top:1rem;border-radius:10px;padding:.8rem 1rem;display:none}
+.feedback.ok{display:block;background:var(--good-bg);color:var(--good)}
+.feedback.no{display:block;background:var(--bad-bg);color:var(--bad)}
+.feedback .hand{color:inherit}
+.feedback .fx{color:var(--ink);margin-top:.3rem}
+.mistakes{margin-top:2rem}
+.mistakes ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:.4rem}
+.mistakes li{background:var(--bad-bg);color:var(--bad);border-radius:8px;padding:.2rem .6rem;font-weight:700;font-variant-numeric:tabular-nums}
+.empty{color:var(--ink-soft);font-style:italic}
+
+footer{max-width:1080px;margin:0 auto;padding:0 1.2rem 3rem;color:var(--ink-soft);font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){
+  .words.fresh{animation:write .5s ease-out}
+  @keyframes write{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">les nombres</div>
+    <nav role="tablist" aria-label="Sections">
+      <button role="tab" data-tab="learn" aria-selected="true">Learn</button>
+      <button role="tab" data-tab="chart" aria-selected="false">1–100 chart</button>
+      <button role="tab" data-tab="convert" aria-selected="false">Converter</button>
+      <button role="tab" data-tab="practice" aria-selected="false">Practice</button>
+    </nav>
+    <div class="settings">
+      <label>Region
+        <select id="region">
+          <option value="fr">France</option>
+          <option value="be">Belgium</option>
+          <option value="ch">Switzerland</option>
+        </select>
+      </label>
+      <label>Spelling
+        <select id="spelling">
+          <option value="trad">Traditional</option>
+          <option value="reform">1990 reform</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <div class="cahier hero" aria-live="polite">
+    <div class="digits" id="heroDigits">97</div>
+    <div class="words hand" id="heroWords"></div>
+    <div class="muted" id="heroMath"></div>
+    <div class="hero-controls">
+      <button class="btn primary" id="heroListen">▶ Listen</button>
+      <button class="btn" id="heroNext">Another number</button>
+    </div>
+  </div>
+
+  <!-- LEARN -->
+  <section id="learn" role="tabpanel">
+    <div class="lessons">
+      <div class="lesson-nav" id="lessonNav"></div>
+      <div id="lessonBody"></div>
+    </div>
+  </section>
+
+  <!-- CHART -->
+  <section id="chart" role="tabpanel" hidden>
+    <h2>Every number from 0 to 100</h2>
+    <p class="muted">Tap a square to see and hear it. Use ← → to move through the numbers.</p>
+    <div class="chart" id="chartGrid"></div>
+    <div class="legend"><span></span> 70–99, where France counts in twenties</div>
+    <div class="cahier chart-out" id="chartOut"><span class="muted">Pick a number.</span></div>
+  </section>
+
+  <!-- CONVERTER -->
+  <section id="convert" role="tabpanel" hidden>
+    <h2>Type any number</h2>
+    <p class="muted">Up to 999 999 999 999. You’ll get the French, how it’s built, and the rules that apply.</p>
+    <div class="conv-input">
+      <input id="convIn" inputmode="numeric" value="1984" aria-label="Number to convert">
+      <button class="btn primary" id="convListen">▶ Listen</button>
+    </div>
+    <div class="cahier">
+      <div class="hand" id="convWords" style="font-size:clamp(1.2rem,3vw,1.8rem);line-height:1.7"></div>
+      <div class="chips" id="convChips"></div>
+      <ul class="notes" id="convNotes"></ul>
+    </div>
+  </section>
+
+  <!-- PRACTICE -->
+  <section id="practice" role="tabpanel" hidden>
+    <h2>Practice</h2>
+    <div class="modes" id="modes" aria-label="Exercise type">
+      <button data-mode="write" aria-pressed="true">Number → French</button>
+      <button data-mode="read" aria-pressed="false">French → number</button>
+      <button data-mode="listen" aria-pressed="false">Listen → number</button>
+    </div>
+    <div class="prac-top">
+      <label class="muted">Range
+        <select id="range">
+          <option value="0-16">0 – 16</option>
+          <option value="17-69">17 – 69</option>
+          <option value="70-99">70 – 99</option>
+          <option value="0-100" selected>0 – 100</option>
+          <option value="100-999">100 – 999</option>
+          <option value="1000-9999">1 000 – 9 999</option>
+          <option value="10000-999999">10 000 – 999 999</option>
+          <option value="years">Years (1900 – 2099)</option>
+          <option value="big">Millions</option>
+          <option value="mix">Mixed</option>
+        </select>
+      </label>
+      <div class="score">
+        <div><b id="sRight">0</b><small>correct</small></div>
+        <div><b id="sTotal">0</b><small>answered</small></div>
+        <div><b id="sStreak">0</b><small>streak</small></div>
+        <div><b id="sBest">0</b><small>best streak</small></div>
+      </div>
+    </div>
+    <div class="cahier">
+      <div class="prompt" id="prompt"></div>
+      <div class="answer-row">
+        <input id="answer" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your answer">
+        <button class="btn primary" id="check">Check</button>
+        <button class="btn" id="replay" hidden>▶ Play again</button>
+        <button class="btn" id="skip">Show answer</button>
+      </div>
+      <div class="accents" id="accents">
+        <button class="btn small" data-ch="é">é</button>
+        <button class="btn small" data-ch="-">-</button>
+      </div>
+      <div class="feedback" id="feedback" role="status"></div>
+    </div>
+    <div class="mistakes">
+      <h3>Numbers to review</h3>
+      <p class="muted">Missed numbers come back more often until you get them right.</p>
+      <div id="mistakeList"></div>
+      <button class="btn small" id="resetStats">Reset score and review list</button>
+    </div>
+  </section>
+</main>
+<footer>Audio uses your browser’s built-in French voice. If you hear nothing, install a French voice in your system’s speech settings.</footer>
+
+<script>
+/* ===================== Number engine ===================== */
+const U=["zéro","un","deux","trois","quatre","cinq","six","sept","huit","neuf","dix","onze","douze","treize","quatorze","quinze","seize"];
+const TENS={2:"vingt",3:"trente",4:"quarante",5:"cinquante",6:"soixante",7:"septante",8:"huitante",9:"nonante"};
+
+function usesRegular(t,region){
+  if(t<=6) return true;
+  if(t===7||t===9) return region!=="fr";
+  if(t===8) return region==="ch";
+  return false;
+}
+function below100(n,region,plural){
+  if(n<17) return U[n];
+  if(n<20) return "dix-"+U[n-10];
+  const t=Math.floor(n/10),u=n%10;
+  if(usesRegular(t,region)){
+    const w=TENS[t];
+    if(u===0) return w;
+    if(u===1) return w+" et un";
+    return w+"-"+U[u];
+  }
+  if(t===7){ if(n===71) return "soixante et onze"; return "soixante-"+below100(n-60,region,plural); }
+  if(n===80) return plural?"quatre-vingts":"quatre-vingt";
+  return "quatre-vingt-"+below100(n-80,region,plural);
+}
+function below1000(n,region,plural){
+  const h=Math.floor(n/100),r=n%100,parts=[];
+  if(h===1) parts.push("cent");
+  else if(h>1) parts.push(U[h]+" cent"+(r===0&&plural?"s":""));
+  if(r>0||h===0) parts.push(below100(r,region,plural));
+  return parts.join(" ");
+}
+function groupsOf(n){
+  return {g:Math.floor(n/1e9),m:Math.floor(n/1e6)%1000,k:Math.floor(n/1e3)%1000,r:n%1000};
+}
+function toFrench(n,region="fr",reform=false){
+  if(n===0) return "zéro";
+  const {g,m,k,r}=groupsOf(n),p=[];
+  if(g) p.push(g===1?"un milliard":below1000(g,region,true)+" milliards");
+  if(m) p.push(m===1?"un million":below1000(m,region,true)+" millions");
+  if(k) p.push(k===1?"mille":below1000(k,region,false)+" mille");
+  if(r) p.push(below1000(r,region,true));
+  let s=p.join(" ");
+  if(reform) s=s.replace(/ /g,"-");
+  return s;
+}
+/* how a 0–99 number is built */
+function mathOf(n,region){
+  if(n<17) return n<=16&&n>10?"learn by heart":"";
+  if(n<20) return "10 + "+(n-10);
+  const t=Math.floor(n/10),u=n%10;
+  if(usesRegular(t,region)) return u?`${t*10} + ${u}`:"";
+  if(t===7) return `60 + ${n-60}`;
+  return n===80?"4 × 20":`4 × 20 + ${n-80}`;
+}
+const fmt=n=>n.toLocaleString("fr-FR").replace(/\u202f/g,"\u00a0");
+
+/* ===================== Settings & speech ===================== */
+const store={
+  get(k,d){try{const v=localStorage.getItem("fn:"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("fn:"+k,JSON.stringify(v))}catch(e){}}
+};
+const S={region:store.get("region","fr"),reform:store.get("reform",false)};
+const regionSel=document.getElementById("region"),spellSel=document.getElementById("spelling");
+regionSel.value=S.region;spellSel.value=S.reform?"reform":"trad";
+const fr=n=>toFrench(n,S.region,S.reform);
+
+let voices=[];
+function loadVoices(){voices="speechSynthesis" in window?speechSynthesis.getVoices():[]}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/-/g," "));
+  const lang={fr:"fr-FR",be:"fr-BE",ch:"fr-CH"}[S.region];
+  u.lang=lang;
+  const v=voices.find(v=>v.lang.replace("_","-")===lang)||voices.find(v=>v.lang.toLowerCase().startsWith("fr"));
+  if(v) u.voice=v;
+  u.rate=.9;
+  speechSynthesis.speak(u);
+}
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ===================== Tabs ===================== */
+const tabs=document.querySelectorAll("nav button");
+function showTab(id){
+  tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===id));
+  document.querySelectorAll("main > section").forEach(s=>s.hidden=s.id!==id);
+  store.set("tab",id);
+  if(id==="practice"&&!current) nextQuestion();
+}
+tabs.forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+
+/* ===================== Hero ===================== */
+let heroN=97;
+function renderHero(fresh){
+  document.getElementById("heroDigits").textContent=fmt(heroN);
+  const w=document.getElementById("heroWords");
+  w.textContent=fr(heroN);
+  if(fresh){w.classList.remove("fresh");void w.offsetWidth;w.classList.add("fresh")}
+  const m=heroN<100?mathOf(heroN,S.region):"";
+  document.getElementById("heroMath").textContent=m?"Built as "+m:"";
+}
+document.getElementById("heroListen").onclick=()=>speak(fr(heroN));
+document.getElementById("heroNext").onclick=()=>{
+  const pools=[[70,99],[17,69],[100,999],[1000,99999],[0,16]];
+  const [a,b]=pools[Math.floor(Math.random()*pools.length)];
+  heroN=a+Math.floor(Math.random()*(b-a+1));
+  renderHero(true);speak(fr(heroN));
+};
+
+/* ===================== Lessons ===================== */
+function tilesHTML(list,showMath){
+  return `<div class="tiles">${list.map(n=>{
+    const m=showMath?mathOf(n,S.region):"";
+    return `<button class="tile" data-say="${n}"><span class="n">${fmt(n)}</span><span class="w">${esc(fr(n))}</span>${m?`<span class="m">${m}</span>`:""}</button>`;
+  }).join("")}</div>`;
+}
+function exTable(rows){
+  return `<div class="scroll"><table class="ex"><thead><tr><th>Number</th><th>French</th><th>Why</th><th></th></tr></thead><tbody>${
+    rows.map(([n,why])=>`<tr><td>${fmt(n)}</td><td class="hand">${esc(fr(n))}</td><td>${why}</td><td><button class="speak" data-say="${n}" aria-label="Listen to ${n}">🔊</button></td></tr>`).join("")
+  }</tbody></table></div>`;
+}
+const range=(a,b,s=1)=>{const r=[];for(let i=a;i<=b;i+=s)r.push(i);return r};
+
+const LESSONS=[
+  {id:"base",title:"0 – 16",sub:"The words to memorise",render:()=>`
+    <h2>0 to 16: learn these by heart</h2>
+    <p>Everything else in French is built from these seventeen words plus a handful of tens. Notice that 11 to 16 each have their own word, unlike English “-teen”, which French only starts at 17.</p>
+    ${tilesHTML(range(0,16))}
+    <div class="rule"><p><b>Pronunciation tips</b></p>
+    <p>The final consonant of <span class="hand">six</span>, <span class="hand">huit</span> and <span class="hand">dix</span> changes: it’s silent before a consonant (<span class="hand">six livres</span>), sounds like z before a vowel (<span class="hand">six amis</span>), and is pronounced on its own. <span class="hand">Cinq</span> and <span class="hand">sept</span> are usually pronounced in full; the p in <span class="hand">sept</span> is always silent.</p></div>`},
+  {id:"tens",title:"17 – 69",sub:"Tens and the “et un” rule",render:()=>`
+    <h2>17 to 69: a regular pattern</h2>
+    <p>17, 18 and 19 are “ten-seven”, “ten-eight”, “ten-nine”. From 20 on, learn the tens, then join the units with a hyphen.</p>
+    ${tilesHTML([17,18,19,20,30,40,50,60],true)}
+    <div class="rule"><p><b>The “et un” rule</b></p>
+    <p>When a ten ends in 1, use <span class="hand">et un</span> instead of a hyphen: 21, 31, 41, 51, 61. All other units take a hyphen.</p></div>
+    ${exTable([[21,"ends in 1 → et un"],[22,"hyphen"],[31,"et un"],[45,"hyphen"],[61,"et un"],[69,"hyphen"]])}`},
+  {id:"seventy",title:"70 – 99",sub:"Counting in twenties",render:()=>{
+    const fr70=S.region==="fr";
+    return `
+    <h2>70 to 99: the famous part</h2>
+    ${fr70?`<p>In France, 70 is “sixty-ten”, 80 is “four twenties” and 90 is “four twenties ten”. Each number is a small sum: say the base, then add what’s missing.</p>`:
+    `<p>You’ve picked ${S.region==="be"?"Belgium":"Switzerland"}, where 70 and 90 are regular: <span class="hand">septante</span>, <span class="hand">nonante</span>${S.region==="ch"?", and 80 is <span class=\"hand\">huitante</span> in most cantons":". 80 stays <span class=\"hand\">quatre-vingts</span> as in France"}. Switch the region at the top to compare with France.</p>`}
+    ${tilesHTML(range(70,99),true)}
+    <div class="rule"><p><b>Three details that trip people up</b></p>
+    <p>71 keeps the “et”: <span class="hand">${esc(fr(71))}</span>. But 81 and 91 drop it: <span class="hand">${esc(fr(81))}</span>, <span class="hand">${esc(fr(91))}</span>.</p>
+    <p>80 alone takes an s, <span class="hand">quatre-vingts</span>, which disappears as soon as another number follows: <span class="hand">quatre-vingt-deux</span>.</p></div>`}},
+  {id:"hundreds",title:"100 – 999",sub:"When cent takes an s",render:()=>`
+    <h2>100 to 999: cent</h2>
+    <p>100 is just <span class="hand">cent</span>, never “un cent”. For 200 and up, put the multiplier first.</p>
+    <div class="rule"><p><b>The plural rule</b></p>
+    <p><span class="hand">Cent</span> takes an s when it’s multiplied and nothing follows it: <span class="hand">deux cents</span>, but <span class="hand">deux cent un</span>. The same rule applies to <span class="hand">quatre-vingts</span>.</p></div>
+    ${exTable([[100,"no “un”"],[101,"no “et” after cent"],[200,"multiplied, nothing after → s"],[201,"something follows → no s"],[250,"no s"],[380,"cent has no s, but vingts at the end does"],[999,"all the pieces together"]])}`},
+  {id:"thousands",title:"1 000 and up",sub:"mille, million, milliard",render:()=>`
+    <h2>Thousands, millions, billions</h2>
+    <p><span class="hand">Mille</span> works like <span class="hand">cent</span>: no “un” in front, but it <em>never</em> takes an s. <span class="hand">Million</span> and <span class="hand">milliard</span> are nouns, so they need <span class="hand">un</span> and take an s in the plural.</p>
+    ${exTable([[1000,"no “un”"],[1001,"mille + un"],[2000,"mille never takes s"],[10000,"dix mille"],[21000,"et un stays"],[80000,"before mille, vingt loses its s"],[200000,"before mille, cent loses its s"],[1000000,"needs un"],[2000000,"noun → plural s"],[200000000,"before a noun, cents keeps its s"],[1000000000,"milliard = 10⁹"]])}
+    <div class="rule"><p><b>Writing big numbers</b></p>
+    <p>French groups digits with a space and uses a comma for decimals: 10 000 and 3,5 (where English writes 10,000 and 3.5). A French <span class="hand">billion</span> means 10¹², so English “billion” translates as <span class="hand">milliard</span>.</p></div>
+    <h3>Years</h3>
+    <p>Years are read as ordinary numbers: <span class="hand">${esc(fr(1984))}</span> for 1984. You may also hear <span class="hand">dix-neuf cent quatre-vingt-quatre</span>, which is accepted but less common.</p>
+    ${exTable([[1789,""],[1999,""],[2026,""]])}`},
+  {id:"spelling",title:"Spelling reform",sub:"Hyphens everywhere",render:()=>`
+    <h2>Traditional spelling vs the 1990 reform</h2>
+    <p>Traditionally, hyphens join only numbers below 100 (except around “et”). The 1990 spelling reform, now taught in many schools, recommends hyphens between every part. Both spellings are correct; the practice section accepts either.</p>
+    <div class="scroll"><table class="ex"><thead><tr><th>Number</th><th>Traditional</th><th>1990 reform</th></tr></thead><tbody>${
+      [21,101,345,1001,2026,71000].map(n=>`<tr><td>${fmt(n)}</td><td class="hand">${esc(toFrench(n,S.region,false))}</td><td class="hand">${esc(toFrench(n,S.region,true))}</td></tr>`).join("")
+    }</tbody></table></div>
+    <p class="muted">Use the Spelling menu at the top to switch the whole site.</p>`}
+];
+let lessonId=store.get("lesson","base");
+function renderLessons(){
+  document.getElementById("lessonNav").innerHTML=LESSONS.map(l=>`<button data-l="${l.id}" aria-current="${l.id===lessonId}"><b>${l.title}</b><small>${l.sub}</small></button>`).join("");
+  const L=LESSONS.find(l=>l.id===lessonId)||LESSONS[0];
+  document.getElementById("lessonBody").innerHTML=L.render();
+}
+document.getElementById("lessonNav").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-l]");if(!b)return;
+  lessonId=b.dataset.l;store.set("lesson",lessonId);renderLessons();
+});
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-say]");if(!b)return;
+  const n=+b.dataset.say;speak(fr(n));heroN=n;renderHero(true);
+});
+
+/* ===================== Chart ===================== */
+let chartN=null;
+function renderChart(){
+  const g=document.getElementById("chartGrid");
+  g.innerHTML=range(1,100).map(n=>`<button data-c="${n}" class="${n>=70&&n<=99&&S.region==="fr"?"z7":""}${n===chartN?" on":""}">${n}</button>`).join("");
+  if(chartN!==null) renderChartOut();
+}
+function renderChartOut(){
+  const m=chartN<100?mathOf(chartN,S.region):"";
+  document.getElementById("chartOut").innerHTML=`<div style="font-size:2.4rem;font-weight:700;line-height:1">${chartN}</div><div class="hand" style="font-size:1.5rem;line-height:1.8">${esc(fr(chartN))}</div>${m?`<div class="muted">${m}</div>`:""}`;
+}
+function pickChart(n,focus){
+  chartN=Math.max(1,Math.min(100,n));
+  document.querySelectorAll("#chartGrid button").forEach(b=>b.classList.toggle("on",+b.dataset.c===chartN));
+  renderChartOut();speak(fr(chartN));
+  if(focus) document.querySelector(`#chartGrid button[data-c="${chartN}"]`).focus();
+}
+document.getElementById("chartGrid").addEventListener("click",e=>{const b=e.target.closest("button");if(b)pickChart(+b.dataset.c)});
+document.getElementById("chartGrid").addEventListener("keydown",e=>{
+  const cur=+(document.activeElement.dataset.c||chartN||1);
+  const d={ArrowRight:1,ArrowLeft:-1,ArrowDown:10,ArrowUp:-10}[e.key];
+  if(d){e.preventDefault();pickChart(cur+d,true)}
+});
+
+/* ===================== Converter ===================== */
+const convIn=document.getElementById("convIn");
+function explainNotes(n){
+  const notes=[];const {g,m,k,r}=groupsOf(n);
+  const last2=[g,m,k,r].map(x=>x%100);
+  const has=(fn)=>[g,m,k,r].some(fn);
+  if(n===0) return notes;
+  if(has(x=>x%100>20&&x%100<70&&x%10===1)||(S.region!=="fr"&&has(x=>x%100>70&&x%10===1&&!(S.region==="be"&&Math.floor(x%100/10)===8)))) notes.push("A ten ending in 1 is joined with <b>et un</b> instead of a hyphen.");
+  if(S.region==="fr"&&has(x=>x%100>=70&&x%100<80)) notes.push("70–79 is counted as <b>60 + 10…19</b>. 71 keeps “et”: soixante et onze.");
+  if(S.region!=="ch"&&has(x=>x%100>=80)) notes.push("80–99 is <b>4 × 20 + …</b>. 81 and 91 take no “et”.");
+  if(S.region!=="ch"&&(r%100===80||m%100===80||g%100===80)) notes.push("<b>quatre-vingts</b> takes an s because nothing follows it.");
+  if(S.region!=="ch"&&k%100===80) notes.push("Before <b>mille</b>, quatre-vingt loses its s.");
+  if([g,m,r].some(x=>x>=200&&x%100===0)) notes.push("<b>cents</b> takes an s: multiplied and nothing after it (or followed by million/milliard).");
+  if(k>=200&&k%100===0) notes.push("Before <b>mille</b>, cent loses its s.");
+  if([g,m,k,r].some(x=>Math.floor(x/100)>=2&&x%100)) notes.push("<b>cent</b> stays singular because a number follows it.");
+  if([g,m,k,r].some(x=>Math.floor(x/100)===1)) notes.push("Just <b>cent</b> for 100, never “un cent”.");
+  if(k===1) notes.push("Just <b>mille</b> for 1 000, never “un mille”.");
+  if(k>1) notes.push("<b>mille</b> never takes an s.");
+  if(m||g) notes.push("<b>million</b> and <b>milliard</b> are nouns: they need “un” and take an s in the plural.");
+  if(S.reform) notes.push("1990 reform spelling: every part is joined with hyphens.");
+  return notes;
+}
+function renderConv(){
+  const raw=convIn.value.replace(/[\s.,\u00a0\u202f']/g,"");
+  const out=document.getElementById("convWords"),chips=document.getElementById("convChips"),notes=document.getElementById("convNotes");
+  if(!/^\d+$/.test(raw)){out.textContent="";chips.innerHTML="";notes.innerHTML=raw?"<li>Type digits only, for example 1984 or 2 500 000.</li>":"<li>Type a number to see it in French.</li>";return}
+  const n=Number(raw);
+  if(n>999999999999){out.textContent="";chips.innerHTML="";notes.innerHTML="<li>That’s beyond 999 999 999 999. Try a smaller number.</li>";return}
+  out.textContent=fr(n);
+  const {g,m,k,r}=groupsOf(n),c=[];
+  const part=(v,plural)=>below1000(v,S.region,plural);
+  if(g) c.push(["milliards",fmt(g*1e9),g===1?"un milliard":part(g,true)+" milliards"]);
+  if(m) c.push(["millions",fmt(m*1e6),m===1?"un million":part(m,true)+" millions"]);
+  if(k) c.push(["thousands",fmt(k*1000),k===1?"mille":part(k,false)+" mille"]);
+  if(r||n===0) c.push(["units",fmt(r),n===0?"zéro":part(r,true)]);
+  chips.innerHTML=c.length>1?c.map(([lbl,num,w])=>`<div class="chip"><span class="k">${num}</span><span class="hand">${esc(S.reform?w.replace(/ /g,"-"):w)}</span></div>`).join(""):"";
+  notes.innerHTML=explainNotes(n).map(x=>`<li>${x}</li>`).join("");
+}
+convIn.addEventListener("input",renderConv);
+document.getElementById("convListen").onclick=()=>{const n=Number(convIn.value.replace(/\D/g,""));if(convIn.value.trim())speak(fr(n))};
+
+/* ===================== Practice ===================== */
+let mode=store.get("mode","write"),current=null,answered=false;
+let stats=store.get("stats",{right:0,total:0,streak:0,best:0});
+let mistakes=store.get("mistakes",[]);
+const rangeSel=document.getElementById("range");
+rangeSel.value=store.get("range","0-100");
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function drawNumber(){
+  const v=rangeSel.value;
+  const inRange=n=>{
+    if(v==="mix") return true;
+    if(v==="years") return n>=1900&&n<=2099;
+    if(v==="big") return n>=1e6;
+    const [a,b]=v.split("-").map(Number);return n>=a&&n<=b;
+  };
+  const pool=mistakes.filter(inRange);
+  if(pool.length&&Math.random()<.35){
+    const c=pool[Math.floor(Math.random()*pool.length)];
+    if(!current||c!==current.n||pool.length===1) return c;
+  }
+  if(v==="years") return rnd(1900,2099);
+  if(v==="big") return rnd(1,999)*1e6+(Math.random()<.5?0:rnd(0,999999));
+  if(v==="mix"){const opts=["0-100","70-99","100-999","1000-9999","10000-999999"];const [a,b]=opts[rnd(0,4)].split("-").map(Number);return rnd(a,b)}
+  const [a,b]=v.split("-").map(Number);
+  let n;do{n=rnd(a,b)}while(current&&n===current.n&&b>a);
+  return n;
+}
+const promptEl=document.getElementById("prompt"),ans=document.getElementById("answer"),fb=document.getElementById("feedback");
+function nextQuestion(){
+  const n=drawNumber();current={n};answered=false;
+  fb.className="feedback";fb.innerHTML="";ans.value="";
+  document.getElementById("replay").hidden=mode!=="listen";
+  document.getElementById("accents").style.display=mode==="write"?"flex":"none";
+  document.getElementById("check").textContent="Check";
+  if(mode==="write"){promptEl.className="prompt";promptEl.textContent=fmt(n);ans.placeholder="Write it in French";ans.inputMode="text"}
+  if(mode==="read"){promptEl.className="prompt hand";promptEl.textContent=fr(n);ans.placeholder="Type the number in digits";ans.inputMode="numeric"}
+  if(mode==="listen"){promptEl.className="prompt";promptEl.innerHTML=`<span class="muted" style="font-size:1.2rem;font-weight:400">Listen and type the number you hear.</span>`;ans.placeholder="Type the number in digits";ans.inputMode="numeric";setTimeout(()=>speak(fr(n)),150)}
+  ans.focus({preventScroll:true});
+}
+const norm=s=>s.toLowerCase().trim().replace(/[\u2010-\u2015]/g,"-").replace(/[\s-]+/g," ");
+const noAcc=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function breakdown(n){
+  if(n<100){const m=mathOf(n,S.region);return m?`Built as ${m}.`:""}
+  const notes=explainNotes(n);return notes.slice(0,2).map(x=>x).join(" ");
+}
+function check(){
+  if(answered){nextQuestion();return}
+  const val=ans.value.trim();if(!val){ans.focus();return}
+  const n=current.n;let ok=false,note="";
+  if(mode==="write"){
+    const targets=[toFrench(n,S.region,false),toFrench(n,S.region,true)].map(norm);
+    const v=norm(val);
+    if(targets.includes(v)) ok=true;
+    else if(targets.map(noAcc).includes(noAcc(v))){ok=true;note="Correct, but watch the accents."}
+    else {
+      const otherRegions=["fr","be","ch"].filter(r=>r!==S.region).map(r=>norm(toFrench(n,r,false)));
+      if(otherRegions.includes(v)) note=`That’s the form used in another region. Your setting is ${regionSel.options[regionSel.selectedIndex].text}.`;
+      else if(targets.some(t=>t.replace(/s\b/g,"")===v.replace(/s\b/g,""))) note="Almost: check the plural s on cent / vingt.";
+      else if(targets.some(t=>t.replace(/ et /g," ")===v.replace(/ et /g," "))) note="Almost: check where “et” goes.";
+    }
+  } else {
+    ok=Number(val.replace(/[\s.,\u00a0\u202f']/g,""))===n;
+  }
+  answered=true;stats.total++;
+  if(ok){
+    stats.right++;stats.streak++;stats.best=Math.max(stats.best,stats.streak);
+    mistakes=mistakes.filter(x=>x!==n);
+    fb.className="feedback ok";
+    fb.innerHTML=`<b>Correct.</b> ${note} <div class="hand" style="font-size:1.2rem">${fmt(n)} = ${esc(fr(n))}</div>`;
+  } else {
+    stats.streak=0;if(!mistakes.includes(n)) mistakes.push(n);mistakes=mistakes.slice(-40);
+    fb.className="feedback no";
+    fb.innerHTML=`<b>Not quite.</b> ${note}<div class="hand" style="font-size:1.2rem">${fmt(n)} = ${esc(fr(n))}</div><div class="fx">${breakdown(n)}</div>`;
+  }
+  document.getElementById("check").textContent="Next";
+  if(mode!=="listen") speak(fr(n));
+  saveStats();renderStats();
+}
+function saveStats(){store.set("stats",stats);store.set("mistakes",mistakes)}
+function renderStats(){
+  document.getElementById("sRight").textContent=stats.right;
+  document.getElementById("sTotal").textContent=stats.total;
+  document.getElementById("sStreak").textContent=stats.streak;
+  document.getElementById("sBest").textContent=stats.best;
+  document.getElementById("mistakeList").innerHTML=mistakes.length?`<ul>${mistakes.map(n=>`<li><button class="speak" data-say="${n}" style="color:inherit;font-weight:700">${fmt(n)}</button></li>`).join("")}</ul>`:`<p class="empty">Nothing to review yet.</p>`;
+}
+document.getElementById("check").onclick=check;
+ans.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();check()}});
+document.getElementById("skip").onclick=()=>{
+  if(answered){nextQuestion();return}
+  const n=current.n;answered=true;stats.total++;stats.streak=0;
+  if(!mistakes.includes(n)) mistakes.push(n);
+  fb.className="feedback no";
+  fb.innerHTML=`<div class="hand" style="font-size:1.2rem">${fmt(n)} = ${esc(fr(n))}</div><div class="fx">${breakdown(n)}</div>`;
+  document.getElementById("check").textContent="Next";speak(fr(n));saveStats();renderStats();
+};
+document.getElementById("replay").onclick=()=>{speak(fr(current.n));ans.focus()};
+document.getElementById("accents").addEventListener("click",e=>{
+  const b=e.target.closest("[data-ch]");if(!b)return;
+  const s=ans.selectionStart??ans.value.length;
+  ans.value=ans.value.slice(0,s)+b.dataset.ch+ans.value.slice(ans.selectionEnd??s);
+  ans.focus();ans.setSelectionRange(s+1,s+1);
+});
+document.getElementById("modes").addEventListener("click",e=>{
+  const b=e.target.closest("[data-mode]");if(!b)return;
+  mode=b.dataset.mode;store.set("mode",mode);
+  document.querySelectorAll("#modes button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.mode===mode));
+  nextQuestion();
+});
+document.querySelectorAll("#modes button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.mode===mode));
+rangeSel.onchange=()=>{store.set("range",rangeSel.value);nextQuestion()};
+document.getElementById("resetStats").onclick=()=>{stats={right:0,total:0,streak:0,best:0};mistakes=[];saveStats();renderStats()};
+
+/* ===================== Settings change ===================== */
+function rerenderAll(){
+  renderHero(false);renderLessons();renderChart();renderConv();
+  if(current&&!answered&&mode==="read") promptEl.textContent=fr(current.n);
+}
+regionSel.onchange=()=>{S.region=regionSel.value;store.set("region",S.region);rerenderAll()};
+spellSel.onchange=()=>{S.reform=spellSel.value==="reform";store.set("reform",S.reform);rerenderAll()};
+
+/* init */
+renderHero(true);renderLessons();renderChart();renderConv();renderStats();
+showTab(store.get("tab","learn"));
+</script>
+</body>
+</html>
